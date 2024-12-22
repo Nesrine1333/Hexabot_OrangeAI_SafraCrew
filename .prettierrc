@@ -1,5 +1,6 @@
 {
   "singleQuote": true,
   "trailingComma": "all",
-  "importOrderSeparation": true
+  "importOrderSeparation": true,
+  "endOfLine": "auto"
 }

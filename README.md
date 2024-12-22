@@ -50,6 +50,29 @@ This plugin serves as the entry point for the conversation. Its purpose is to de
   ```  
   to retrieve available event types.  
 - **Context Variables:** Utilizes context variables to transfer the meeting type value to other plugins.  
+---
+
+## **Features**:
+
+### PLugin 1: Gemini Plugin
+* Processes and interprets the first user message.
+* Seamlessly integrates with other plugins in the chatbot workflow.
+
+### Plugin 2: Event-Types Plugin
+* Integrates with the Calendly API to fetch available event types.
+* Dynamically generates a list of event categories based on the user's ID.
+* Displays quick-reply buttons for interactive selection of event types.
+* Stores fetched event types in context variables for seamless interaction across plugins.
+
+### Plugin 3: available-plugin-time
+* Fetches specific event details from the Calendly API using the event name and user ID.
+* Retrieves available time slots for a given event within a specified time range.
+* Filters and displays unique dates for the available times, ensuring clarity and ease of selection.
+* Provides error handling to inform users when event details or available times cannot be retrieved.
+* Integrates context variables to enable smooth data sharing with other plugins.
+
+### Plugin 4: Link-plugin
+* Provides the Calendly link for final booking and confirmation.
 
 ---
 

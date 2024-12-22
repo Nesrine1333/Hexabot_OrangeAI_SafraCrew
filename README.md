@@ -1,5 +1,5 @@
 
-# Scheduling Plugins Guide_Hexabot
+# Calendly Integration Plugin with Hexabot Guide
 
 This project leverages Hexabot Open Source to create a plugin for scheduling meetings and events. The primary goal is to automate the scheduling process and provide an efficient, user-friendly solution.  
 
@@ -91,11 +91,9 @@ This plugin serves as the entry point for the conversation. Its purpose is to de
   ```  
 
   
-### PLugin Call Back Guy: *Gemini Plugin*
+### PLugin 5 Call Back Guy: *Gemini Plugin*
 * Processes and interprets the first user message.
 * Seamlessly integrates with other plugins in the chatbot workflow.
----
-
 
 ---
 

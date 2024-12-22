@@ -1,13 +1,3 @@
-/*
- * Copyright © 2024 Hexastack. All rights reserved.
- *
- * Licensed under the GNU Affero General Public License v3.0 (AGPLv3) with the following additional terms:
- * 1. The name "Hexabot" is a trademark of Hexastack. You may not use this name in derivative works without express written permission.
- * 2. All derivative works must include clear attribution to the original creator and software, Hexastack and Hexabot, in a prominent location (e.g., in the software's "About" section, documentation, and README file).
- */
-
-import { Injectable } from '@nestjs/common';
-
 import { Block } from '@/chat/schemas/block.schema';
 import { Context } from '@/chat/schemas/types/context';
 import {
@@ -20,17 +10,15 @@ import { BaseBlockPlugin } from '@/plugins/base-block-plugin';
 import { PluginService } from '@/plugins/plugins.service';
 import { PluginBlockTemplate } from '@/plugins/types';
 import { SettingService } from '@/setting/services/setting.service';
+import { Injectable } from '@nestjs/common';
 
 import SETTINGS from './settings';
 
 @Injectable()
 export class CurrentTimePlugin extends BaseBlockPlugin<typeof SETTINGS> {
   template: PluginBlockTemplate = {
-    // default trigger for you custom block
-    patterns: ['time'],
-    // if set to true then your block comes as entrypoint by default
-    starts_conversation: true,
-    // displayed name for your plugin
+    patterns: ['/.+/'],
+    starts_conversation: false,
     name: 'Current Time Plugin',
   };
 
@@ -54,26 +42,42 @@ export class CurrentTimePlugin extends BaseBlockPlugin<typeof SETTINGS> {
     const settings = await this.settingService.getSettings();
     const args = this.getArguments(block);
 
+    const calendlyResponse = await fetch(
+      "https://api.calendly.com/scheduling_links",
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + args.token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          max_event_count: 1,
+          owner: "https://api.calendly.com/event_types/7288d571-6f3b-4719-9d0c-3a8adc0950c7",
+          owner_type: "EventType"
+        })
+      }
+    );
+
+    const calendlyData = await calendlyResponse.json();
+    context.vars.link = calendlyData.resource.booking_url;
+
+    /*
     const now = new Date();
     const formattedTime = now.toLocaleTimeString('en-US', { hour12: false });
+    */
 
-    /**
-     * getRandom() function will pick randomly a string from response_message value
-     * array defined in the settings file to build the response.
-     */
     const response: string =
-      this.blockService.getRandom([...args.response_message]) +
-      ' ⌚ ' +
-      formattedTime;
+      this.blockService.getRandom([...args.response_message]) + context.vars.link;
 
-    /**
-     * returned response from your custom block when triggering it, in this example
-     * it returns a text message displaying time now.
-     */
     const msg: StdOutgoingTextEnvelope = {
       format: OutgoingMessageFormat.text,
       message: {
-        text: this.blockService.processText(response, context, {}, settings),
+        text: this.blockService.processText(
+          response,
+          context,
+          {},
+          settings,
+        ),
       },
     };
 

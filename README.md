@@ -1,119 +1,106 @@
-# Hexabot Template Starter
 
-Welcome to the **Hexabot Template Starter** repository! This template provides everything you need to get started with building a custom Hexabot project. It includes essential folders and files to help you extend Hexabot, define your own modules, and quickly run your project in Docker. Below you'll find details on the structure and how to use this template.
+# Calendly Integration Plugin with Hexabot Guide
 
-Not familiar with [Hexabot](https://hexabot.ai/) ? It's an open-source chatbot / agent solution that allows users to create and manage AI-powered, multi-channel, and multilingual chatbots with ease. If you would like to learn more, please visit the [official github repo](https://github.com/Hexastack/Hexabot/).
+This project leverages Hexabot Open Source to create a plugin for scheduling meetings and events. The primary goal is to automate the scheduling process and provide an efficient, user-friendly solution.  
 
-## Project Structure
+-----
 
-- **extensions/**: This folder is where you can develop your own extensions for Hexabot. Inside, you'll find subfolders for:
+## Running the Project  
 
-  - **channels/**: Add new messaging channels.
-  - **helpers/**: Add helper functions or utilities.
-  - **plugins/**: Create plugins to create custom blocks in the visual editor. Plugins is where you can perform text-to-action and integrate with 3rd party APIs. To get started, there is a `hello` plugin provided as an example.
+Follow these steps to set up and run the project:  
 
-- **modules/**: Since Hexabot API is built on top of NestJS, this folder allows you to extend the Hexabot API by adding your own modules (controllers, services, etc.).
-
-- **Dockerfile**: Use this file to build a Docker image on top of Hexabot. It's pre-configured to get your project up and running in a containerized environment.
-
-- **docker/docker-compose.yml**: This file defines the services needed to run your Hexabot project using Docker Compose. It simplifies the setup of multiple services such as databases or other dependencies.
-
-## Getting Started
-
-1. **Install Hexabot CLI**:
-   To create a new Hexabot project, first install the Hexabot CLI globally:
-
+1. Clone the repository.  
+2. Install dependencies:  
    ```bash
-   npm install -g hexabot-cli
-   ```
-
-2. **Create Your Project**:
-   Use the Hexabot CLI to create a new chatbot project:
-
+   npm i
+   ```  
+3. Initialize Hexabot:  
    ```bash
-   hexabot create my-chatbot
-   ```
-
-3. **Configure Your Environment**:
-
-   - Copy the `.env.example` file to `.env` and customize it according to your environment and configuration needs.
-
-   ```bash
-   cp .env.example .env
-   ```
-
-4. **Run the Project**:
-   Navigate into the newly created folder and run the following command to start the project in development mode:
-
+   hexabot init
+   ```  
+4. Start the development server:  
    ```bash
    hexabot dev
-   ```
-
-   For production mode, you can use:
-
-   ```bash
-   hexabot start
-   ```
-
-   _Note_: The first run may take some time as it needs to download all required Docker images.
-
-5. **Configure your NLU Engine**:
-   After creating your new project, the **Hexabot LLM-NLU Engine** will be enabled by default. This NLU engine relies on one of the following LLM helpers being present, you can enable one of these by following the steps detailed in [LLM NLU Engine](https://docs.hexabot.ai/user-guide/nlu/nlu-engines/llm-nlu-engine) documentation page:
-
-   - Ollama Helper (`hexabot-helper-ollama`)
-   - Google Gemini Helper (`hexabot-helper-gemini`)
-   - OpenAI ChatGPT Helper (`hexabot-helper-chatgpt`)
-
-   You must follow the instructions of the selected LLM helper in their specific documentation before starting the project.
-
-## Built-in Features
-
-- **Generative AI Support**: This template includes both the **ollama helper** and **plugin** by default to help you get started with generative AI features.
-- **NLU API**: A built-in Natural Language Understanding (NLU) API is provided for intent recognition and language detection.
-
-## Extending Hexabot
-
-You can easily extend Hexabot's functionality by installing additional extensions (channels, helpers, plugins) via npm. Below are some examples:
-
-- Install a new channel (e.g., Messenger):
-
-  ```bash
-  npm install hexabot-channel-messenger
-  ```
-
-- Install a new plugin (e.g., ChatGPT integration):
-  ```bash
-  npm install hexabot-plugin-chatgpt
-  ```
-
-## Docker Setup
-
-This template comes with a pre-configured **Dockerfile** and **docker-compose.yml** to help you containerize your project quickly.
-
-- **Dockerfile**: Builds your Hexabot-based project.
-- **docker-compose.yml**: Defines the necessary services for your project, allowing you to start everything with a single command.
-
-## Documentation
-
-For detailed information on how to get started, as well as in-depth user and developer guides, please refer to our full documentation available in the docs folder or visit the [Documentation](https://docs.hexabot.ai).
-
-## Contributing
-
-We welcome contributions from the community! Whether you want to report a bug, suggest new features, or submit a pull request, your input is valuable to us.
-
-Please refer to our contribution policy first : [How to contribute to Hexabot](https://github.com/Hexastack/Hexabot/blob/main/CONTRIBUTING.md)
-
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](./CODE_OF_CONDUCT.md)
-
-Feel free to join us on [Discord](https://discord.gg/rNb9t2MFkG)
-
-## License
-
-This software is licensed under the GNU Affero General Public License v3.0 (AGPLv3) with the following additional terms:
-
-1. The name "Hexabot" is a trademark of Hexastack. You may not use this name in derivative works without express written permission.
-2. All derivative works must include clear attribution to the original creator and software, Hexastack and Hexabot, in a prominent location (e.g., in the software's "About" section, documentation, and README file).
+   ```  
+5. Access the project at [localhost:8080](http://localhost:8080).  
 
 ---
 
-Happy building with Hexabot! 🎉
+## Resources Needed for Developers  
+
+To use the plugin during development, you will need:  
+
+### Auth Token  
+Generate an access token for testing with Calendly by following these steps:  
+1. Create an account on [Calendly](https://developer.calendly.com/api-docs/).  
+2. Generate an access token from the API documentation section.  
+
+---
+
+## Created Plugins  
+
+### **JustPlugin**  
+**Description:**  
+This plugin serves as the entry point for the conversation. Its purpose is to determine what type of meeting or event the user is looking to schedule.  
+
+
+---
+
+## **Features**:
+
+
+
+### Plugin 1: *Event-Types Plugin*
+* Integrates with the Calendly API to fetch available event types.
+* Dynamically generates a list of event categories based on the user's ID.
+* Displays quick-reply buttons for interactive selection of event types.
+* Stores fetched event types in context variables for seamless interaction across plugins.
+* **Features:**  
+- **Fetch Event Types:** Uses the endpoint:  
+  ```plaintext
+  https://api.calendly.com/event_types/{uuid}
+  ```  
+  to retrieve available event types.  
+- **Context Variables:** Utilizes context variables to transfer the meeting type value to other plugins.  
+
+### Plugin 2: *CalendlyPlugin*
+* Fetches specific event details from the Calendly API using the event name and user ID.
+* Retrieves available time slots for a given event within a specified time range.
+* Filters and displays unique dates for the available times, ensuring clarity and ease of selection.
+* Provides error handling to inform users when event details or available times cannot be retrieved.
+* Integrates context variables to enable smooth data sharing with other plugins.
+* **Features:**  
+- **Retrieve Event Types:** Uses the endpoint:  
+  ```plaintext
+  https://api.calendly.com/event_types
+  ```  
+  to fetch all available event types.  
+- **Fetch Available Dates:** Uses the endpoint:  
+  ```plaintext
+  https://api.calendly.com/event_type_available_times
+  ```  
+  to retrieve available dates for scheduling.  
+- **Context Variables:** Passes the meeting type value between plugins for seamless integration.  
+
+### Plugin 3: *Link-plugin*
+* Provides the Calendly link for final booking and confirmation.
+* **Features:**  
+- **Return scheduling link :** Uses the endpoint:  
+  ```plaintext
+  https://api.calendly.com/scheduling_links
+  ```  
+
+  
+### PLugin 5 Call Back Guy: *Gemini Plugin*
+* Processes and interprets the first user message.
+* Seamlessly integrates with other plugins in the chatbot workflow.
+
+---
+
+## Notes  
+- This project demonstrates the potential of Hexabot and Calendly APIs for automating scheduling processes.  
+- Challenges like handling API responses and passing data between custom plugins were addressed with creative solutions.  
+
+Feel free to contribute or provide feedback to improve the project!  
+
+

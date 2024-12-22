@@ -6,7 +6,8 @@
     "format": "prettier --write \"extensions/**/*.ts\" \"modules/**/*.ts\"",
     "lint": "eslint \"{extensions,modules}/**/*.ts\"",
     "lint:fix": "eslint \"{extensions,modules}/**/*.ts\" --fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+     "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -25,10 +26,11 @@
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-import-resolver-typescript": "~3.6.1",
+    "eslint-plugin-header": "^3.1.1",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-license-header": "^0.6.1",
     "eslint-plugin-prettier": "^5.0.0",
-    "husky": "^9.0.11",
+    "husky": "^8.0.0",
     "prettier": "^3.0.0"
   }
 }

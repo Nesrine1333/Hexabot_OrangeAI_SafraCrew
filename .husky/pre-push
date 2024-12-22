@@ -6,3 +6,4 @@ if echo "$BRANCH_NAME" | grep -Eq "$RESTRICTED_BRANCHES"; then
 	echo "Cannot push directly to branch: '${BRANCH_NAME}'"
 	exit 1
 fi
+npm test

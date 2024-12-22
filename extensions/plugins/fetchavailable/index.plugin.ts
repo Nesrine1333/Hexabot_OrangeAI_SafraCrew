@@ -67,6 +67,35 @@ export class CalendlyPlugin extends BaseBlockPlugin<any> {
       return null;
     }
   }
+  
+  async fetchEventCurrentUser(): Promise<string | null> {
+    try {
+      const url = `https://api.calendly.com/users/me`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Authorization: BEARER_TOKEN,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+  
+      // Access the `uri` field inside the `resource` object
+      const userUri = data.resource?.uri;
+  
+      return userUri || null; // Return null if `uri` is not found
+    } catch (error) {
+      console.error('Failed to fetch current user from Calendly:', error.message);
+      return null;
+    }
+  }
+  
+
+
 
   async fetchAvailableTimes(
     eventTypeUri: string,
@@ -79,43 +108,56 @@ export class CalendlyPlugin extends BaseBlockPlugin<any> {
       )}&end_time=${encodeURIComponent(endTime)}&event_type=${encodeURIComponent(
         eventTypeUri,
       )}`;
-
+  
       const response = await fetch(url, {
         method: 'GET',
         headers: {
           Authorization: BEARER_TOKEN,
         },
       });
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
+  
       const data = await response.json();
-      return data.collection.map(
-        (item: { start_time: string }) => item.start_time,
+  
+      // Extract only unique dates from the start_time field
+      const uniqueDates: string[] = Array.from(
+        new Set(
+          data.collection.map((item: { start_time: string }) =>
+            new Date(item.start_time).toISOString().split('T')[0],
+          ),
+        ),
       );
+  
+      return uniqueDates;
     } catch (error) {
-      console.error(
-        'Failed to fetch available times from Calendly:',
-        error.message,
-      );
+      console.error('Failed to fetch available times from Calendly:', error.message);
       return [];
     }
   }
-
+  
+  
+  
   async process(
     block: Block,
     _context: Context,
     _convId: string,
   ): Promise<StdOutgoingEnvelope> {
     const args = this.getArguments(block);
-
-    const eventName = 'test_event'; //contextvar
-    const user = "https://api.calendly.com/users/4eff9ab6-ea27-4924-9e75-8a23a3aa5513";//contextvar
-    const startTime = '2024-12-30T14:18:22.123456Z';
-    const endTime ='2024-12-31T14:18:22.123456Z';
-
+  
+    const eventName = 'bedtime'; // contextvar
+    const user = await this.fetchEventCurrentUser(); // contextvar
+  
+    // Calculate today's date and the date 7 days from now
+    const now = new Date();
+    const startTime = now.toISOString(); // Current date and time in ISO format
+  
+    const next7Days = new Date();
+    next7Days.setDate(now.getDate() + 7); // Add 7 days to current date
+    const endTime = next7Days.toISOString();
+  
     if (!eventName || !user || !startTime || !endTime) {
       return {
         format: OutgoingMessageFormat.text,
@@ -124,9 +166,9 @@ export class CalendlyPlugin extends BaseBlockPlugin<any> {
         },
       };
     }
-
+  
     const uri = await this.fetchEventTypeByName(eventName, user);
-
+  
     if (!uri) {
       return {
         format: OutgoingMessageFormat.text,
@@ -135,20 +177,19 @@ export class CalendlyPlugin extends BaseBlockPlugin<any> {
         },
       };
     }
-
+  
     const availableTimes = await this.fetchAvailableTimes(uri, startTime, endTime);
-
+  
     const envelope: StdOutgoingTextEnvelope = {
       format: OutgoingMessageFormat.text,
       message: {
         text: availableTimes.length
-          ? `Available times for event "${eventName}":\n${availableTimes.join(
-              '\n',
-            )}`
+          ? `Available times for event "${eventName}":\n${availableTimes.join('\n')}`
           : `No available times found for event "${eventName}" within the given time range.`,
       },
     };
-
+  
     return envelope as StdOutgoingEnvelope;
   }
+  
 }

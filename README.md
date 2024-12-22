@@ -43,48 +43,33 @@ Generate an access token for testing with Calendly by following these steps:
 **Description:**  
 This plugin serves as the entry point for the conversation. Its purpose is to determine what type of meeting or event the user is looking to schedule.  
 
-**Features:**  
+
+---
+
+## **Features**:
+
+
+
+### Plugin 1: *Event-Types Plugin*
+* Integrates with the Calendly API to fetch available event types.
+* Dynamically generates a list of event categories based on the user's ID.
+* Displays quick-reply buttons for interactive selection of event types.
+* Stores fetched event types in context variables for seamless interaction across plugins.
+* **Features:**  
 - **Fetch Event Types:** Uses the endpoint:  
   ```plaintext
   https://api.calendly.com/event_types/{uuid}
   ```  
   to retrieve available event types.  
 - **Context Variables:** Utilizes context variables to transfer the meeting type value to other plugins.  
----
 
-## **Features**:
-
-### PLugin 1: Gemini Plugin
-* Processes and interprets the first user message.
-* Seamlessly integrates with other plugins in the chatbot workflow.
-
-### Plugin 2: Event-Types Plugin
-* Integrates with the Calendly API to fetch available event types.
-* Dynamically generates a list of event categories based on the user's ID.
-* Displays quick-reply buttons for interactive selection of event types.
-* Stores fetched event types in context variables for seamless interaction across plugins.
-
-### Plugin 3: available-plugin-time
+### Plugin 2: *CalendlyPlugin*
 * Fetches specific event details from the Calendly API using the event name and user ID.
 * Retrieves available time slots for a given event within a specified time range.
 * Filters and displays unique dates for the available times, ensuring clarity and ease of selection.
 * Provides error handling to inform users when event details or available times cannot be retrieved.
 * Integrates context variables to enable smooth data sharing with other plugins.
-
-### Plugin 4: Link-plugin
-* Provides the Calendly link for final booking and confirmation.
-
-### Plugin 5: Callback Guy Plugin
-* Uses the Gemini API to analyze and understand the user's message.
-* Provides insights or triggers appropriate actions based on the interpretation.
-  
----
-
-### **CalendlyPlugin**  
-**Description:**  
-This plugin handles fetching available event types and scheduling meeting times based on user preferences.  
-
-**Features:**  
+* **Features:**  
 - **Retrieve Event Types:** Uses the endpoint:  
   ```plaintext
   https://api.calendly.com/event_types
@@ -96,6 +81,21 @@ This plugin handles fetching available event types and scheduling meeting times 
   ```  
   to retrieve available dates for scheduling.  
 - **Context Variables:** Passes the meeting type value between plugins for seamless integration.  
+
+### Plugin 3: *Link-plugin*
+* Provides the Calendly link for final booking and confirmation.
+* **Features:**  
+- **Return scheduling link :** Uses the endpoint:  
+  ```plaintext
+  https://api.calendly.com/scheduling_links
+  ```  
+
+  
+### PLugin Call Back Guy: *Gemini Plugin*
+* Processes and interprets the first user message.
+* Seamlessly integrates with other plugins in the chatbot workflow.
+---
+
 
 ---
 

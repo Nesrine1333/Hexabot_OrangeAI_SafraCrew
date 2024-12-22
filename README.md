@@ -74,6 +74,10 @@ This plugin serves as the entry point for the conversation. Its purpose is to de
 ### Plugin 4: Link-plugin
 * Provides the Calendly link for final booking and confirmation.
 
+### Plugin 5: Callback Guy Plugin
+* Uses the Gemini API to analyze and understand the user's message.
+* Provides insights or triggers appropriate actions based on the interpretation.
+  
 ---
 
 ### **CalendlyPlugin**  

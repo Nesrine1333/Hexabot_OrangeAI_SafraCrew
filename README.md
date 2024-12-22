@@ -1,5 +1,5 @@
 
-# Scheduling Plugins Guide  
+# Scheduling Plugins Guide_Hexabot
 
 This project leverages Hexabot Open Source to create a plugin for scheduling meetings and events. The primary goal is to automate the scheduling process and provide an efficient, user-friendly solution.  
 
